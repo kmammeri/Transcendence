@@ -1,1 +1,6 @@
 .env
+.next
+build
+node_modules
+data
+/site
