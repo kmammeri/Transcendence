@@ -1,15 +1,20 @@
 version: '3'
 services:
   db:
-    image: postgres # Utilisation de l'image officielle PostgreSQL depuis Docker Hub
-    environment:
-      POSTGRES_USER: ${POSTGRE_USER} # Récupère la valeur de POSTGRES_USER depuis le fichier .env
-      POSTGRES_PASSWORD: ${POSTGRE_PASSWORD} # Récupère la valeur de POSTGRES_PASSWORD depuis le fichier .env
-      POSTGRES_DB: ${POSTGRE_DB} # Récupère la valeur de POSTGRES_DB depuis le fichier .env
+    build:
+      context: ./postgre # Chemin vers le répertoire contenant le Dockerfile du conteneur postgre
+      dockerfile: Dockerfile # Nom du Dockerfile du conteneur postgre
     container_name: db
+    env_file: ./.env
+    environment:
+      POSTGRES_USER: coucou #$POSTGRES_USER # Récupère la valeur de POSTGRES_USER depuis le fichier .env
+      POSTGRES_PASSWORD: toilabas #$POSTGRES_PASSWORD # Récupère la valeur de POSTGRES_PASSWORD depuis le fichier .env
+      POSTGRES_DB: commentcava #$POSTGRES_DB # Récupère la valeur de POSTGRES_DB depuis le fichier .env
     ports:
       - "5432:5432" # Port sur lequel votre base de données PostgreSQL sera exposée
     restart: always
+    networks:
+      - default
     volumes:
       - ./postgre/data:/var/lib/postgresql/data # Montage d'un volume pour persister les données PostgreSQL
   web:
