@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: postgres # Utilisation de l'image officielle PostgreSQL depuis Docker Hub
+    environment:
+      POSTGRES_USER: ${POSTGRE_USER} # Récupère la valeur de POSTGRES_USER depuis le fichier .env
+      POSTGRES_PASSWORD: ${POSTGRE_PASSWORD} # Récupère la valeur de POSTGRES_PASSWORD depuis le fichier .env
+      POSTGRES_DB: ${POSTGRE_DB} # Récupère la valeur de POSTGRES_DB depuis le fichier .env
+    volumes:
+      - ./postgre/data:/var/lib/postgresql/data # Montage d'un volume pour persister les données PostgreSQL
+  web:
+    build:
+      context: ./web # Chemin vers le répertoire contenant le Dockerfile du conteneur npm
+      dockerfile: Dockerfile # Nom du Dockerfile du conteneur npm
+    container_name: web
+    restart: always
+    volumes:
+      - ./web/site:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - FAST_REFRESH=true # Active le hot reload de React
+    # volumes:
+    #   - ./app:/app # Montage d'un volume pour persister les données de l'application
+    depends_on:
+      - db # Spécifie que le conteneur npm dépend du conteneur db (PostgreSQL)
