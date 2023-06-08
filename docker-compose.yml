@@ -6,6 +6,10 @@ services:
       POSTGRES_USER: ${POSTGRE_USER} # Récupère la valeur de POSTGRES_USER depuis le fichier .env
       POSTGRES_PASSWORD: ${POSTGRE_PASSWORD} # Récupère la valeur de POSTGRES_PASSWORD depuis le fichier .env
       POSTGRES_DB: ${POSTGRE_DB} # Récupère la valeur de POSTGRES_DB depuis le fichier .env
+    container_name: db
+    ports:
+      - "5432:5432" # Port sur lequel votre base de données PostgreSQL sera exposée
+    restart: always
     volumes:
       - ./postgre/data:/var/lib/postgresql/data # Montage d'un volume pour persister les données PostgreSQL
   web:
@@ -14,6 +18,8 @@ services:
       dockerfile: Dockerfile # Nom du Dockerfile du conteneur npm
     container_name: web
     restart: always
+    networks:
+      - default
     volumes:
       - ./web/site:/app
       - /app/node_modules
@@ -22,7 +28,23 @@ services:
       - "3000:3000"
     environment:
       - FAST_REFRESH=true # Active le hot reload de React
-    # volumes:
-    #   - ./app:/app # Montage d'un volume pour persister les données de l'application
     depends_on:
       - db # Spécifie que le conteneur npm dépend du conteneur db (PostgreSQL)
+  nest:
+    build:
+      context: ./nest # Chemin vers le répertoire contenant le Dockerfile du conteneur NestJS
+      dockerfile: Dockerfile # Nom du Dockerfile du conteneur NestJS
+    container_name: nest
+    restart: always
+    networks:
+      - default
+    volumes:
+      - ./nest/back:/back # Chemin vers le répertoire contenant le code source de votre application NestJS
+    ports:
+      - "3001:3001" # Port sur lequel votre application NestJS sera exposée
+    environment:
+      - FAST_REFRESH=true # Active le hot reload
+    depends_on:
+      - db # Spécifie que le conteneur NestJS dépend du conteneur db (PostgreSQL)
+networks:
+  default:
