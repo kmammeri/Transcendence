@@ -1,31 +1,57 @@
+"use client";
+
+import React from 'react'
 import Image from 'next/image'
 import styles from './page.module.css'
 
 export default function Home() {
+  // Fetch data from url http://localhost:3001
+  const [uri, setUri] = React.useState<string>('')
+  const [datas, setDatas] = React.useState<any>([]);
+
+  React.useEffect(() => {
+    fetch("http://localhost:3001/" + uri, {
+      headers: {
+        mode: 'cors'
+      }
+    })
+      .then((response: Response) => response.text())
+      .then((data: any) => {
+        setDatas(JSON.parse(data))
+      })
+      .catch((error: Error) => {
+        setDatas(error)
+      }
+    )
+  }, [uri])
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <p>
-          Et c{"\'"}est parti pour le projet Transcendence !
-        </p>
-      </div>
+        <div>
+          <p>
+            http://localhost:3001/
+            <input
+              className={styles.input}
+              type="text"
+              value={uri}
+              onChange={(e) => setUri(e.target.value)}
+            />
+            <br />
+            <br />
+            Try `/`, `/hello`, `/users`
+          </p>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+          <br />
+          <br />
+          <br />
 
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
+          <code>
+            <pre>
+              {JSON.stringify(datas, null, 2)}
+            </pre>
+          </code>
+        </div>
       </div>
     </main>
   )
