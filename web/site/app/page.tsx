@@ -5,13 +5,12 @@ import Image from 'next/image'
 import styles from './page.module.css'
 
 export default function Home() {
-
   // Fetch data from url http://localhost:3001
+  const [uri, setUri] = React.useState<string>('')
   const [datas, setDatas] = React.useState<any>([]);
-  const url = 'http://localhost:3001/'
 
   React.useEffect(() => {
-    fetch(url, {
+    fetch("http://localhost:3001/" + uri, {
       headers: {
         mode: 'cors'
       }
@@ -24,43 +23,35 @@ export default function Home() {
         setDatas(error)
       }
     )
-  }, [])
+  }, [uri])
 
   return (
     <main className={styles.main}>
       <div className={styles.description}>
         <div>
-          Fetching datas from : <em>{url}</em>
+          <p>
+            http://localhost:3001/
+            <input
+              className={styles.input}
+              type="text"
+              value={uri}
+              onChange={(e) => setUri(e.target.value)}
+            />
+            <br />
+            <br />
+            Try `/`, `/hello`, `/users`
+          </p>
 
           <br />
           <br />
           <br />
 
-          {/* Return json format with 2 tabs */}
           <code>
             <pre>
               {JSON.stringify(datas, null, 2)}
             </pre>
           </code>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
       </div>
     </main>
   )

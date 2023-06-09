@@ -1,11 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { UserService } from './user/user.service';
+import { User } from './user/user.model';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly userService: UserService,
+  ) {}
 
-  // Render getCoucou() for route `/` and getHello() for the `/hello` route.
   @Get()
   getHello(): Array<string> {
     return this.appService.getCoucou();
@@ -14,5 +18,10 @@ export class AppController {
   @Get('hello')
   getCoucou(): Array<string> {
     return this.appService.getHello();
+  }
+
+  @Get('users')
+  getUsers(): Promise<User[]> {
+    return this.userService.getUsers();
   }
 }
