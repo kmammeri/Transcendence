@@ -1,15 +1,3 @@
--- Création de la base de données
-CREATE DATABASE POSTGRES_DB;
-
--- Utilisation de la base de données
-\connect POSTGRES_DB;
-
--- Création de l'utilisateur administrateur
-CREATE USER POSTGRES_USER WITH PASSWORD 'POSTGRES_PASSWORD';
-
--- Attribution des privilèges d'administrateur à l'utilisateur
-ALTER USER POSTGRES_USER WITH SUPERUSER;
-
 -- userDB
 CREATE TABLE users (
   userID SERIAL PRIMARY KEY,
