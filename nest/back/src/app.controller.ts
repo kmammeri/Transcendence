@@ -1,13 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { UserService } from './user/user.service';
-import { User } from './user/user.model';
+import { Controller, Get } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { UserService } from "./user/user.service";
+import { User } from "./user/user.model";
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly userService: UserService,
+    private readonly userService: UserService
   ) {}
 
   @Get()
@@ -15,12 +15,12 @@ export class AppController {
     return this.appService.getCoucou();
   }
 
-  @Get('hello')
+  @Get("hello")
   getCoucou(): Array<string> {
     return this.appService.getHello();
   }
 
-  @Get('users')
+  @Get("users")
   getUsers(): Promise<User[]> {
     return this.userService.getUsers();
   }
