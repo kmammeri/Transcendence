@@ -1,29 +1,29 @@
 "use client";
 
-import React from 'react'
-import Image from 'next/image'
-import styles from './page.module.css'
+import React from "react";
+import styles from "./page.module.css";
 
 export default function Home() {
   // Fetch data from url http://localhost:3001
-  const [uri, setUri] = React.useState<string>('')
-  const [datas, setDatas] = React.useState<any>([]);
+  const [uri, setUri] = React.useState<string>("");
+  const [datas, setDatas] = React.useState<
+    string | Array<object> | object | undefined
+  >([]);
 
   React.useEffect(() => {
     fetch("http://localhost:3001/" + uri, {
       headers: {
-        mode: 'cors'
+        mode: "cors"
       }
     })
       .then((response: Response) => response.text())
-      .then((data: any) => {
-        setDatas(JSON.parse(data))
+      .then((data: string) => {
+        setDatas(JSON.parse(data));
       })
       .catch((error: Error) => {
-        setDatas(error)
-      }
-    )
-  }, [uri])
+        setDatas(error);
+      });
+  }, [uri]);
 
   return (
     <main className={styles.main}>
@@ -47,12 +47,10 @@ export default function Home() {
           <br />
 
           <code>
-            <pre>
-              {JSON.stringify(datas, null, 2)}
-            </pre>
+            <pre>{JSON.stringify(datas, null, 2)}</pre>
           </code>
         </div>
       </div>
     </main>
-  )
+  );
 }

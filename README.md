@@ -2,9 +2,13 @@
 Ce projet consiste à créer un pong.
 
 ## Infos sur le projet:
-- url une fois lancé: `http://localhost:3000/`
-- url de la base de données: `http://localhost:8080/`
+- url du front : `http://localhost:3000/`
+- url du back : `http://localhost:3001/`
+
+# Connexion à la base de données:
 - db inline : `docker exec -it ft_transcendence_db_1 psql -h localhost -p 5432 -U myusername -d mydatabase`
+- bash : `docker exec -it db|web|postgre bash`
+- delete database : `rm -rf /path/to/postgre/data`
 
 ## Deux containers:
 - Un container pour le serveur
