@@ -11,10 +11,11 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    tsconfigRootDir: __dirname,
     parser: "typescript-eslint-parser",
     project: [
-      "./ft_transcendence/web/site/tsconfig.json",
-      "./ft_transcendence/nest/back/tsconfig.json"
+      "./web/site/tsconfig.json",
+      "./nest/back/tsconfig.json"
     ]
   },
   plugins: ["react", "@typescript-eslint"],
